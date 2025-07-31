@@ -24,7 +24,7 @@ Empower any team member to get real-time security data without leaving Slack.
 
 * /appscan summary \<Application Name\>: Get a comprehensive security overview of a specific application.  
 * /appscan list\_apps: Display a formatted list of all applications in your AppScan instance, with their current risk rating and total issue counts.  
-* /appscan list\_my\_scans \<AppScan\_Username\>: List all scans initiated by a specific user.  
+* /appscan list\_scans \<AppScan\_Username\>: List all scans initiated by a specific user.  
 * /appscan scan\_summary \<Scan\_ID\>: Get a detailed summary for a specific scan by its ID.  
 * /appscan help: Show a list of all available commands.
 
@@ -142,7 +142,7 @@ The final step is to invite your bot into the Slack channels where you want to u
 * List Applications:  
   /appscan list\_apps  
 * List Scans Started by a User:  
-  /appscan list\_my\_scans "john.doe@example.com"  
+  /appscan list\_scans "john.doe@example.com"  
 * Get a Specific Scan's Summary:  
   /appscan scan\_summary "d4a3b2c1-e8f9-1234-abcd-5f6e7d8c9b0a"
 * Get Help:  
