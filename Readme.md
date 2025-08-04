@@ -8,7 +8,7 @@ The app runs in **Socket Mode**, which establishes a secure WebSocket connection
 
 ### **Proactive notifications**
 
-* **Automated scan completion alerts:** Receive an instant alert when a scan for a monitored application is completed.  
+* **Automated scan completion alerts:** Receive an instant alert when a scan for a monitored application is complete.  
 * **Detailed summaries:** Notifications include a rich summary with:  
   * Application Name and Scan Name  
   * Scan Technology (DAST, SAST, SCA)  
@@ -23,7 +23,7 @@ The app runs in **Socket Mode**, which establishes a secure WebSocket connection
 Any team member to get real-time security data without leaving Slack.
 
 * /appscan summary \<Application Name\>: Get a comprehensive security overview of a specific application.  
-* /appscan list\_apps: Display a formatted list of all applications in your AppScan instance, with their current risk rating and total issue counts.  
+* /appscan list\_apps: Display a formatted list of all applications in your AppScan instance with their current risk rating and total issue counts.  
 * /appscan list\_scans \<AppScan\_Email\>: List all scans initiated by a specific user's email address.  
 * /appscan scan\_summary \<Scan\_ID\>: Get a detailed summary for a specific scan by its ID.  
 * /appscan help: Show a list of all available commands.
