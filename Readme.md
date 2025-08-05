@@ -108,9 +108,10 @@ All configuration is handled in the src/main/resources/application.properties fi
   \# The format is: AppName1:\#channel-a,\#channel-b;AppName2:\#channel-c  
   
    appscan.app.channel.mapping=AppName1:\#channel-a,\#channel-b;AppName2:\#channel-c 
-  # Map AppScan applications to Slack user IDs
-  # The format is: <AppScan Application Name>:<Slack User ID 1>,<Slack User ID 2>
-  # Multiple users can be specified for the same application, separated by commas.
+  
+  \# Map AppScan applications to Slack user IDs
+  \# The format is: <AppScan Application Name>:<Slack User ID 1>,<Slack User ID 2>
+  \# Multiple users can be specified for the same application, separated by commas.
   appscan.app.user.mapping=Test_App:Slack_MemberID1,Slack_MemberID2;Test:Slack_MemberID3
 
    \# Polling Configuration (in milliseconds)  
