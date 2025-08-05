@@ -12,6 +12,7 @@
     "slash_commands": [
       {
         "command": "/appscan",
+        "description": "AppScan Interaction Command",
         "usage_hint": "[summary|list_apps|list_scans|scan_summary|help]",
         "should_escape": false
       }
