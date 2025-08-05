@@ -97,18 +97,22 @@ All configuration is handled in the src/main/resources/application.properties fi
    slack.app.token=PASTE\_YOUR\_APP\_LEVEL\_TOKEN\_HERE\_(xapp-...)  
      
    \# AppScan API Configuration  
-   appscan.api.baseurl=[https://cloud.appscan.com](https://cloud.appscan.com)  
+   appscan.api.baseurl=<AppScan API Base URL> 
    appscan.api.key=PASTE\_YOUR\_APPSCAN\_KEY\_ID\_HERE  
    appscan.api.secret=PASTE\_YOUR\_APPSCAN\_KEY\_SECRET\_HERE  
      
-   \# Notification Configuration  
-   \# Comma-separated list of AppScan applications to monitor for scan completion  
-   appscan.monitored.apps=MyWebApp,E-Commerce Portal  
-     
-   \# Comma-separated list of Slack channels to map to AppScan applications  
-   \# Format: AppName1:\#channel-a,\#channel-b;AppName2:\#channel-c  
-   appscan.app.channel.mapping=MyWebApp:\#appsec-alerts;E-Commerce Portal:\#dev-team  
-     
+
+   
+  \# Notification Configuration
+  \# Map AppScan applications to Slack channels
+  \# The format is: AppName1:\#channel-a,\#channel-b;AppName2:\#channel-c  
+  
+   appscan.app.channel.mapping=AppName1:\#channel-a,\#channel-b;AppName2:\#channel-c 
+  # Map AppScan applications to Slack user IDs
+  # The format is: <AppScan Application Name>:<Slack User ID 1>,<Slack User ID 2>
+  # Multiple users can be specified for the same application, separated by commas.
+  appscan.app.user.mapping=Test_App:Slack_MemberID1,Slack_MemberID2;Test:Slack_MemberID3
+
    \# Polling Configuration (in milliseconds)  
    appscan.poller.rate.ms=60000  
      
