@@ -1,0 +1,74 @@
+/*
+ *
+ *  *
+ *  * Copyright 2025 HCL America, Inc.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *     http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
+ *  * /
+ *
+ */
+
+package com.hcl.appscan.slackapp.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
+/**
+ * Represents the detailed information of a full scan.
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class FullScanDetails {
+    @JsonProperty("Id")
+    private String id;
+    @JsonProperty("Name")
+    private String name;
+    @JsonProperty("AppName")
+    private String appName;
+    @JsonProperty("Technology")
+    private String technology;
+    @JsonProperty("CreatedAt")
+    private String createdAt;
+    @JsonProperty("CreatedBy")
+    private CreatedBy createdBy;
+    @JsonProperty("LatestExecution")
+    private LatestExecution latestExecution;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public String getTechnology() {
+        return technology;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public CreatedBy getCreatedBy() {
+        return createdBy;
+    }
+
+    public LatestExecution getLatestExecution() {
+        return latestExecution;
+    }
+}

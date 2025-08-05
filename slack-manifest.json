@@ -1,0 +1,38 @@
+{
+  "display_information": {
+    "name": "HCL AppScan Bot",
+    "description": "Integrates HCL AppScan on Cloud & HCL AppScan 360° with Slack for real-time security notifications and summaries.",
+    "background_color": "#202020"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "HCL AppScan Bot",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/appscan",
+        "description": "AppScan Interaction Command",
+        "usage_hint": "[summary|list_apps|list_scans|scan_summary|help]",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "commands",
+        "chat:write",
+        "files:write"
+      ]
+    }
+  },
+  "settings": {
+    "interactivity": {
+      "is_enabled": true
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": true,
+    "token_rotation_enabled": false
+  }
+}
