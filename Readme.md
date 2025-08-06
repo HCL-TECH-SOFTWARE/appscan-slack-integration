@@ -74,7 +74,7 @@ You need two types of tokens from your new Slack app's dashboard.
 4. Give the token a name (e.g., appscan-socket-token).  
 5. Click **Add Scope** and select connections:write.  
 6. Click **Generate**.  
-7. Copy the token that starts with **xapp-**. You will need this for the slack.app.token property.
+7. Copy the token that starts with **xapp-**.  You will need this for the slack.app.token property. You will need this for the SLACK\_APP\_TOKEN environment variable.
 
 **B. Get the bot token for API calls:**
 
@@ -82,27 +82,36 @@ You need two types of tokens from your new Slack app's dashboard.
 2. Click the **Install to Workspace** button.  
 3. Follow the prompts to authorize the app.  
 4. After you authorize the app, you will be redirected to the **OAuth & Permissions** page.  
-5. Copy the **Bot User OAuth Token**. It will start with **xoxb-**. You will need this for the slack.bot.token property.
+5. Copy the **Bot User OAuth Token**. It will start with **xoxb-**. You will need this for the SLACK\_BOT\_TOKEN environment variable.
 
 ### **Part 5: Configure the application**
 
-All configuration is handled in the src/main/resources/application.properties file.
+Configuration is handled through environment variables, which is the most secure method. The application.properties file can be used for non-sensitive settings or for local testing.
+
+#### **A. Set Environment Variables (Recommended & Secure)**
+
+For production environments, set the following environment variables. This prevents secrets from being saved in your source code.
+
+\# Slack App Credentials  
+ SLACK\_BOT\_TOKEN="\<Slack Bot Token\>"  
+ SLACK\_SIGNING\_SECRET="\<Slack Signing Secret\>"  
+ SLACK\_APP\_TOKEN="\<Slack App Token\>"
+
+\# AppScan API Configuration  
+ APPSCAN\_API\_KEY="\<AppScan API Key\>"  
+ APPSCAN\_API\_SECRET="\<AppScan API Secret\>"
+
+#### **B. Configure application.properties**
+
+You can use this file for non-sensitive configuration or for local testing if you prefer not to set environment variables. **Do not commit secrets in this file to version control.**
 
 1. Open the application.properties file in your editor.  
      
 2. Enter the placeholder values:  
-   \# Slack App Credentials  
-   slack.bot.token=PASTE\_YOUR\_BOT\_TOKEN\_HERE\_(xoxb-...)  
-   slack.signing.secret=PASTE\_YOUR\_SIGNING\_SECRET\_HERE  
-   slack.app.token=PASTE\_YOUR\_APP\_LEVEL\_TOKEN\_HERE\_(xapp-...)  
-     
+
    \# AppScan API Configuration  
    appscan.api.baseurl=<AppScan API Base URL> 
-   appscan.api.key=PASTE\_YOUR\_APPSCAN\_KEY\_ID\_HERE  
-   appscan.api.secret=PASTE\_YOUR\_APPSCAN\_KEY\_SECRET\_HERE  
-     
 
-   
   \# Notification Configuration
   \# Map AppScan applications to Slack channels
   \# The format is: AppName1:\#channel-a,\#channel-b;AppName2:\#channel-c  
