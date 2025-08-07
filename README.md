@@ -61,6 +61,9 @@ cd appscan-slack-integration
 4. In the Enter manifest below section, select the **JSON** tab and paste the entire content of the slack-manifest.json file from the project.  
 5. Review the manifest details and click **Next**.  
 6. Click **Create** to finish creating the app.
+7. After creating the app, navigate to **Features \> App Home** in the left sidebar.  
+8. Enable the **Messages Tab** and check the box for **"Allow users to send Slash commands and messages from the messages tab"**. This will allow users to interact with your bot directly from its "Messages" tab.
+
 
 ### **Part 4: Generate Slack tokens**
 
