@@ -140,7 +140,12 @@ public class SlackAppConfig {
                         .exceptionally(ex -> {
                             logger.error("Error fetching or processing AppScan summary", ex);
                             try {
-                                ctx.respond("Failed to fetch summary for `" + commandValue + "`. Reason: " + ex.getMessage());
+                                String errorMsg = ex.getMessage();
+                                // Remove class name if present
+                                if (errorMsg != null && errorMsg.contains(":")) {
+                                    errorMsg = errorMsg.substring(errorMsg.indexOf(":") + 1).trim();
+                                }
+                                ctx.respond("Failed to fetch summary for `" + commandValue + "`. Reason: " + errorMsg);
                             } catch (IOException e) {
                                 logger.error("Failed to send error response", e);
                             }
@@ -240,7 +245,7 @@ public class SlackAppConfig {
                             } catch (IOException e) {
                                 logger.error("Failed to respond with scan summary for ID: {}", scanId, e);
                                 try {
-                                    ctx.respond("Failed to fetch scan summary for ID: " + scanId + ". Reason: " + e.getMessage());
+                                    ctx.respond("Failed to fetch scan summary for ID: " + scanId );
                                 } catch (IOException ioException) {
                                     logger.error("Failed to send error response", ioException);
                                 }
@@ -249,7 +254,7 @@ public class SlackAppConfig {
                         .exceptionally(ex -> {
                             logger.error("Error fetching scan summary for ID: {}", scanId, ex);
                             try {
-                                ctx.respond("Failed to fetch scan summary for ID: " + scanId + ". Reason: " + ex.getMessage());
+                                ctx.respond("Failed to fetch scan summary for ID: " + scanId);
                             } catch (IOException e) {
                                 logger.error("Failed to send error response", e);
                             }
