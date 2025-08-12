@@ -63,8 +63,6 @@ public class NotificationService {
     private String appScanBaseUrl;
     public NotificationService(@Lazy App slackApp, ChannelAppMappingConfig channelAppMappingConfig, UserAppMappingConfig userAppMappingConfig) {
         this.slackApp = slackApp;
-        //this.notificationChannel = notificationChannel;
-
         this.channelAppMappingConfig = channelAppMappingConfig;
         this.userAppMappingConfig = userAppMappingConfig;
     }
@@ -151,7 +149,7 @@ public class NotificationService {
                 ButtonElement.builder()
                         .text(PlainTextObject.builder().text("Generate Report").emoji(true).build())
                         .actionId("download_report_button")
-                        .value(scanDetails.getId()) // Store scanId here
+                        .value("{\"scanId\":\"" + scanDetails.getId() + "\",\"scanName\":\"" + scanDetails.getName() + "\"}") // Store scanId here
                         .build()
         )).build());
 
@@ -159,7 +157,7 @@ public class NotificationService {
     }
 
 
-    public void handleDownloadReportButton(String channelId, String userId, String scanId, AppScanService appScanService) {
+    public void handleDownloadReportButton(String channelId, String userId, String scanId, AppScanService appScanService,String scanName) {
         // 1. Immediately acknowledge the request
         try {
             slackApp.client().chatPostMessage(r -> r
@@ -172,7 +170,7 @@ public class NotificationService {
 
         // 2. Generate the report and send the download link
         try {
-            String downloadLink = appScanService.getScanReportDownloadLink(scanId);
+            String downloadLink = appScanService.getScanReportDownloadLink(scanId,scanName);
             // Only use the blocks parameter for the Markdown link
             slackApp.client().chatPostMessage(r -> r
                     .channel(channelId)

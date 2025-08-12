@@ -35,10 +35,7 @@ import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -263,20 +260,20 @@ public CompletableFuture<Optional<FullScanDetails>> getScanSummaryById(String sc
 }
 
 
-    public String getScanReportDownloadLink(String scanId) throws Exception {
+    public String getScanReportDownloadLink(String scanId,String scanName) throws Exception {
         String createUrl = apiBaseUrl + "/Reports/Security/Scan/" + scanId;
-        Map<String, Object> configuration = Map.of(
-                "ReportFileType", "Pdf",
-                "Summary", true,
-                "Details", true,
-                "Discussion", true,
-                "Overview", true,
-                "TableOfContent", true,
-                "History", true,
-                "Coverage", true,
-                "MinimizeDetails", true,
-                "Articles", true
-        );
+        Map<String, Object> configuration = new HashMap<>();
+        configuration.put("ReportFileType", "Pdf");
+        configuration.put("Summary", true);
+        configuration.put("Details", true);
+        configuration.put("Discussion", true);
+        configuration.put("Overview", true);
+        configuration.put("TableOfContent", true);
+        configuration.put("History", true);
+        configuration.put("Coverage", true);
+        configuration.put("MinimizeDetails", true);
+        configuration.put("Articles", true);
+        configuration.put("Title", scanName + " - " + Instant.now().toString());
         Map<String, Object> body = Map.of("Configuration", configuration);
 
         RequestBody requestBody = RequestBody.create(

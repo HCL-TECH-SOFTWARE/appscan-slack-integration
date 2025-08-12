@@ -20,6 +20,7 @@
 
 package com.hcl.appscan.slackapp.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcl.appscan.slackapp.model.FullScanDetails;
 import com.hcl.appscan.slackapp.service.AppScanService;
 import com.hcl.appscan.slackapp.model.AppScanApp;
@@ -71,9 +72,22 @@ public class SlackAppConfig {
         app.blockAction("download_report_button", (req, ctx) -> {
             String channelId = req.getPayload().getChannel().getId();
             String userId = req.getPayload().getUser().getId();
-            String scanId = req.getPayload().getActions().get(0).getValue();
+            String value = req.getPayload().getActions().get(0).getValue();
 
-            notificationService.handleDownloadReportButton(channelId, userId, scanId, appScanService);
+            String scanId = null;
+            String scanName = null;
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, String> valueMap = mapper.readValue(value, Map.class);
+                scanId = valueMap.get("scanId");
+                scanName = valueMap.get("scanName");
+            } catch (Exception e) {
+                logger.error("Failed to parse button value JSON: {}", value, e);
+                ctx.respond("Failed to parse button value. Please try again.");
+                return ctx.ack();
+            }
+
+            notificationService.handleDownloadReportButton(channelId, userId, scanId, appScanService , scanName);
 
             return ctx.ack();
         });
