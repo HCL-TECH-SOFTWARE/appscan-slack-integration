@@ -156,40 +156,70 @@ public class NotificationService {
         return blocks;
     }
 
-
-    public void handleDownloadReportButton(String channelId, String userId, String scanId, AppScanService appScanService,String scanName) {
-        // 1. Immediately acknowledge the request
+    public void handleDownloadReportButton(String channelId, String userId, String scanId, AppScanService appScanService, String scanName) {
+        String waitingMessageTs = null;
         try {
-            slackApp.client().chatPostMessage(r -> r
+            // 1. Send the "please wait" message and capture its timestamp
+            ChatPostMessageResponse waitMsgResponse = slackApp.client().chatPostMessage(r -> r
                     .channel(channelId)
                     .text("Generating your AppScan PDF report, please wait... :hourglass_flowing_sand:")
             );
+            if (waitMsgResponse.isOk()) {
+                waitingMessageTs = waitMsgResponse.getTs();
+            }
         } catch (Exception e) {
             logger.warn("Failed to send initial acknowledgement to Slack: {}", e.getMessage());
         }
 
-        // 2. Generate the report and send the download link
         try {
-            String downloadLink = appScanService.getScanReportDownloadLink(scanId,scanName);
-            // Only use the blocks parameter for the Markdown link
-            slackApp.client().chatPostMessage(r -> r
-                    .channel(channelId)
-                    .blocks(List.of(
-                            SectionBlock.builder()
-                                    .text(MarkdownTextObject.builder()
-                                            .text("*Your AppScan PDF report is ready.*\n<" + downloadLink + "|Download Report>")
-                                            .build())
-                                    .build()
-                    ))
-                    .text("Your AppScan PDF report is ready.") // fallback for notifications, not shown in channel
-            );
+            // 2. Generate the report and get the download link
+            String downloadLink = appScanService.getScanReportDownloadLink(scanId, scanName);
+
+            // 3. Update the original message with the download link
+            if (waitingMessageTs != null) {
+                String finalWaitingMessageTs = waitingMessageTs;
+                slackApp.client().chatUpdate(r -> r
+                        .channel(channelId)
+                        .ts(finalWaitingMessageTs)
+                        .blocks(List.of(
+                                SectionBlock.builder()
+                                        .text(MarkdownTextObject.builder()
+                                                .text("*Your AppScan PDF report is ready.*\n<" + downloadLink + "|Download Report>")
+                                                .build())
+                                        .build()
+                        ))
+                        .text("Your AppScan PDF report is ready.")
+                );
+            } else {
+                // Fallback: send a new message if we couldn't update
+                slackApp.client().chatPostMessage(r -> r
+                        .channel(channelId)
+                        .blocks(List.of(
+                                SectionBlock.builder()
+                                        .text(MarkdownTextObject.builder()
+                                                .text("*Your AppScan PDF report is ready.*\n<" + downloadLink + "|Download Report>")
+                                                .build())
+                                        .build()
+                        ))
+                        .text("Your AppScan PDF report is ready.")
+                );
+            }
         } catch (Exception e) {
             logger.error("Failed to generate report link for scan {}: {}", scanId, e.getMessage(), e);
             try {
-                slackApp.client().chatPostMessage(r -> r
-                        .channel(channelId)
-                        .text("Failed to generate the report download link for scan " + scanId + ". Reason: " + e.getMessage())
-                );
+                if (waitingMessageTs != null) {
+                    String finalWaitingMessageTs1 = waitingMessageTs;
+                    slackApp.client().chatUpdate(r -> r
+                            .channel(channelId)
+                            .ts(finalWaitingMessageTs1)
+                            .text("Failed to generate the report download link for scan " + scanId + ". Reason: " + e.getMessage())
+                    );
+                } else {
+                    slackApp.client().chatPostMessage(r -> r
+                            .channel(channelId)
+                            .text("Failed to generate the report download link for scan " + scanId + ". Reason: " + e.getMessage())
+                    );
+                }
             } catch (Exception ex) {
                 logger.error("Failed to send error message to Slack: {}", ex.getMessage(), ex);
             }
