@@ -151,11 +151,11 @@ public class AppScanService {
         });
     }
 
-    // change the method to return a list of only first 10 applications
+    // method to return a list of first 30 applications as slack has a limit on number of characters in a message
     public CompletableFuture<List<AppScanApp>> getAllApplications() {
         return getAuthToken().thenCompose(token -> {
             HttpUrl.Builder urlBuilder = HttpUrl.parse(apiBaseUrl + "/Apps").newBuilder();
-            urlBuilder.addQueryParameter("$top", "10");
+            urlBuilder.addQueryParameter("$top", "30");
             Request request = new Request.Builder().url(urlBuilder.build()).header("Authorization", "Bearer " + token).build();
             return CompletableFuture.supplyAsync(() -> {
                 try (Response response = httpClient.newCall(request).execute()) {
