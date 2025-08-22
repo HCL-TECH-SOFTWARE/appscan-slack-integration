@@ -174,7 +174,10 @@ public class AppScanService {
         return getAuthToken().thenCompose(token -> {
             HttpUrl.Builder urlBuilder = HttpUrl.parse(apiBaseUrl + "/Scans").newBuilder();
             urlBuilder.addQueryParameter("$top", "1");
-            urlBuilder.addQueryParameter("$filter", "AppId eq " + appId);
+            urlBuilder.addQueryParameter(
+                    "$filter",
+                    "AppId eq " + appId + " and IsPersonal eq false"
+            );
             urlBuilder.addQueryParameter("$orderby", "CreatedAt desc");
             Request request = new Request.Builder().url(urlBuilder.build()).header("Authorization", "Bearer " + token).build();
             return CompletableFuture.supplyAsync(() -> {
