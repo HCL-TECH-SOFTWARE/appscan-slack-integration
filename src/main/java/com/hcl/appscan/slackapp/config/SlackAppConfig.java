@@ -174,10 +174,10 @@ public class SlackAppConfig {
                             blocks.add(HeaderBlock.builder().text(PlainTextObject.builder().text("AppScan Applications").emoji(true).build()).build());
 
                             for (AppScanApp appItem : apps) {
-                                String appDetails = String.format("*%s*\n*Risk:* %s | *Total Issues:* %d",
-                                        appItem.getName(), appItem.getRiskRating(), appItem.getTotalIssues());
+                                String appDetails = String.format("*%s*\n *Total Issues:* %d",
+                                        appItem.getName(), appItem.getTotalIssues());
                                 blocks.add(SectionBlock.builder().text(MarkdownTextObject.builder().text(appDetails).build()).build());
-                                blocks.add(DividerBlock.builder().build());
+
                             }
 
                             try {
