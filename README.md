@@ -23,8 +23,8 @@ The app runs in **Socket Mode**, which establishes a secure WebSocket connection
 Any team member to get real-time security data without leaving Slack.
 
 * /appscan summary \<Application Name\>: Get a comprehensive security overview of a specific application.  
-* /appscan list\_apps: Display a formatted list of all applications in your AppScan instance with their current risk rating and total issue counts.  
-* /appscan list\_scans \<AppScan\_Email\>: List all scans initiated by a specific user's email address.  
+* /appscan list\_apps: Display a formatted list of top 30 applications in your AppScan instance with their current risk rating and total issue counts.  
+* /appscan list\_scans \<AppScan\_Email\>: List top 10 scans initiated by a specific user's email address.  
 * /appscan scan\_summary \<Scan\_ID\>: Get a detailed summary for a specific scan by its ID.  
 * /appscan help: Show a list of all available commands.
 
