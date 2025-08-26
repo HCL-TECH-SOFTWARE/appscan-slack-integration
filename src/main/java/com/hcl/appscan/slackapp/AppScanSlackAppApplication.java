@@ -21,6 +21,7 @@
 package com.hcl.appscan.slackapp;
 import com.slack.api.bolt.App;
 import com.slack.api.bolt.socket_mode.SocketModeApp;
+import com.slack.api.socket_mode.SocketModeClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +59,7 @@ class SlackAppRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         logger.info("--- Starting Slack App in Socket Mode ---");
-        new SocketModeApp(appToken, slackApp).startAsync();
+        new SocketModeApp(appToken,  SocketModeClient.Backend.JavaWebSocket,slackApp).startAsync();
     }
 }
 
