@@ -50,6 +50,8 @@ public class AppScanService {
     private final String apiSecret;
     private final String apiBaseUrl;
     private final AtomicReference<ApiKeyLoginResponse> currentToken = new AtomicReference<>();
+    private static String clientType;
+    private static final String CLIENT_NAME = "slack";
 
     public AppScanService(
             @Value("${appscan.api.key}") String apiKey,
@@ -104,13 +106,14 @@ public class AppScanService {
 
     private CompletableFuture<String> getAuthToken() {
         ApiKeyLoginResponse token = currentToken.get();
-        if (token == null || token.getExpire().isBefore(Instant.now().plusSeconds(60))) {
+        // Refresh token if null or expiring within 30 minutes
+        if (token == null || token.getExpire().isBefore(Instant.now().plusSeconds(1800))) {
             logger.info("Auth token is invalid or expiring soon. Refreshing...");
-            Map<String, String> loginPayload = Map.of("KeyId", apiKey, "KeySecret", apiSecret);
+            Map<String, String> loginPayload = Map.of("KeyId", apiKey, "KeySecret", apiSecret, "ClientType", getClientType());
             try {
                 String jsonPayload = objectMapper.writeValueAsString(loginPayload);
                 okhttp3.RequestBody body = okhttp3.RequestBody.create(jsonPayload, MediaType.parse("application/json; charset=utf-8"));
-                Request request = new Request.Builder().url(apiBaseUrl + "/Account/ApiKeyLogin").post(body).build();
+                Request request = new Request.Builder().url(apiBaseUrl + "/Account/ApiKeyLogin").post(body).header("ClientType", getClientType()).build();
                 return CompletableFuture.supplyAsync(() -> {
                     try (Response response = httpClient.newCall(request).execute()) {
                         if (!response.isSuccessful() || response.body() == null)
@@ -335,5 +338,24 @@ public CompletableFuture<Optional<FullScanDetails>> getScanSummaryById(String sc
             logger.error("Failed to get auth token synchronously", e);
             throw e;
         }
+    }
+
+    public static String getClientType() {
+        if (clientType == null) {
+            String version = AppScanService.class.getPackage().getImplementationVersion();
+            // If running in an IDE, the version might not be available , hence default to "dev"
+            version = (version == null) ? "dev" : version.toLowerCase();
+            String osName = System.getProperty("os.name");
+            osName = (osName == null) ? "unknown" : osName.toLowerCase().trim().split(" ")[0];
+            clientType = sanitizeClientType(CLIENT_NAME + "-" + osName + "-" + version);
+        }
+        logger.info("clientType: {}", clientType);
+        return clientType;
+    }
+
+    public static String sanitizeClientType(String clientType) {
+        if (clientType == null) return null;
+        String regex = "[^a-zA-Z0-9\\-._]";
+        return clientType.replaceAll(regex, "");
     }
 }

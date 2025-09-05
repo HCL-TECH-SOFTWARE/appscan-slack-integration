@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.hcl</groupId>
     <artifactId>appscan-slack-app</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>appscan-slack-app</name>
     <description>A Slack Bot for HCL AppScan Integration</description>
     <properties>
